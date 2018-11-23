@@ -26,12 +26,12 @@ def main():
             print(ip_result + " is detected online. Response time(s) were: " + ip_response)
             ip_list.append(ip_result)
     seconds = time.time() - start
-    seconds = seconds * 1000 #Convert to milliseconds.
+    milliseconds = seconds * 1000 #Convert to milliseconds.
     print("The following hosts were found to be online and responding to ping requests:")
     print("\n""Detected Hosts:")
     print("==============")
     print("\n".join(ip_list))
-    print("\n""Total time to scan took: " + str(seconds) + "ms")
+    print("\n""Total time to scan took: " + str(milliseconds) + "ms")
     
 if __name__ == "__main__":
     main()
