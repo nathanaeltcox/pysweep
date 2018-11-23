@@ -8,7 +8,7 @@ def main():
     ip_result = [] #Stores the active IP addresses that are returned.
     ip_response = [] #Stores the time for each ping.
     ip_list = [] #Stores the active IP addresses as a list to be printed.
-    for ip in range(0,7):
+    for ip in range(0,256):
         output = b""
         ip_call = ip_target + str(ip)
         argument = "fping -a -C 5 -q " + ip_call
