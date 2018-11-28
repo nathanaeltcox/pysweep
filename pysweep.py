@@ -1,10 +1,19 @@
 #!/usr/bin/env python
 import subprocess
 import time
+import sys
 
 def main():
     start = time.time()
-    ip_target = "10.0.2."
+    ip_get = input("Please enter IP network address to scan (xxx.xxx.xxx.): ")
+    dots = 0
+    for char in ip_get: #For loop makes it so that it works whether user inputs IP as "x.x.x." or forgets the last period and puts "x.x.x"
+        if char == ".":
+            dots += 1
+        if dots == 3:
+            ip_target = ip_get
+        else:
+            ip_target = ip_get + "."
     ip_result = [] #Stores the active IP addresses that are returned.
     ip_response = [] #Stores the time for each ping.
     ip_list = [] #Stores the active IP addresses as a list to be printed.
@@ -16,14 +25,17 @@ def main():
             output = subprocess.check_output(argument, stderr=subprocess.STDOUT, shell=True)
         except subprocess.CalledProcessError as error:
             e = error.output  #Thanks to Matt Gluck for figuring out this part of the code.
+        except KeyboardInterrupt:
+            print("\n""User interrupted scan.")
+            sys.exit()
         output = output.decode("utf-8")
         output = output.split(" ",2)
         ip_result = output[0]
         if ip_result == "":
             ip_response = ""
-        elif ip_result != "":
+        else:
             ip_response = output[2]
-            print(ip_result + " is detected online. Response time(s) were: " + ip_response)
+            print("{} is detected online. Response time(s) were: {}".format(ip_result, ip_response))
             ip_list.append(ip_result)
     seconds = time.time() - start
     milliseconds = seconds * 1000 #Convert to milliseconds.
@@ -31,7 +43,7 @@ def main():
     print("\n""Detected Hosts:")
     print("==============")
     print("\n".join(ip_list))
-    print("\n""Total time to scan took: " + str(milliseconds) + "ms")
+    print("\n""Total time to scan took: {} ms".format(milliseconds))
     
 if __name__ == "__main__":
     main()
